@@ -1,6 +1,9 @@
 import csv
 import datetime
 import matplotlib.pyplot as plt
+import pylab
+from matplotlib.ticker import FuncFormatter
+#import seaborn as sns
 
 
 def csv_reader(fo):
@@ -40,26 +43,24 @@ def print_middle_year(arr):
         print(2012+i,'=',arr[i])
     return 0
 
-def barplot(x_data, y_data, error_data, x_label="", y_label="", title=""):
-    _, ax = plt.subplots()
-    # Draw bars, position them in the center of the tick mark on the x-axis
-    ax.bar(x_data, y_data, color = '#539caf', align = 'center')
-    # Draw error bars to show standard deviation, set ls to 'none'
-    # to remove line between points
-    ax.errorbar(x_data, y_data, yerr = error_data, color = '#297083', ls = 'none', lw = 2, capthick = 2)
-    ax.set_ylabel(y_label)
-    ax.set_xlabel(x_label)
-    ax.set_title(title)
+def print_day(arr):
+    a = ['Понедельник', 'Вторник','Среда','Четверг','Пятница']
+    for i in range(0, len(arr)):
+        print(a[i],'-',arr[i])
+    return 0
 
 if __name__ == "__main__":
+
     csv_f = "apple.csv"
     arr = []
+
     with open(csv_f, "r") as fo:
         arr = csv_reader(fo)
 
+    year = get_middle_year(arr)
+    print_middle_year(year)
+
     sum_of_day = count_day_sum(arr)
-
-    #print(get_middle_year(arr))
-    print_middle_year(get_middle_year(arr))
-
-    barplot([1,2,3,4,5],[1,1,1,1,],0)
+    fig, ax = plt.subplots()
+    plt.bar(height=(tuple(sum_of_day)), x=('Пн', 'Вт', 'Ср', 'Чт','Пт'))
+    pylab.show()
